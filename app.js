@@ -95,9 +95,13 @@ recognition.onend = () => {
   }
 };
 
-// Download transcription
+// Download transcription with manual edits
 document.getElementById("downloadBtn").addEventListener("click", () => {
-  const blob = new Blob([transcriptionContent], { type: "text/plain" });
+  // Capture the full text from the editable transcription element, including manual edits
+  const transcriptionText = transcriptionElement.textContent;
+
+  // Create a Blob and initiate the download
+  const blob = new Blob([transcriptionText], { type: "text/plain" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
