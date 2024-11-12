@@ -14,7 +14,8 @@ const restartBtn = document.getElementById("restartBtn");
 const recognition = new (window.SpeechRecognition ||
   window.webkitSpeechRecognition)();
 recognition.lang = "ar-SA"; // Set to Arabic
-recognition.interimResults = true;
+recognition.interimResults = true; // Show interim results
+recognition.continuous = true; // Enable continuous listening for improved accuracy
 
 function startTimer() {
   timerInterval = setInterval(() => {
