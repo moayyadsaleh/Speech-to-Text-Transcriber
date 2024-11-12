@@ -60,3 +60,33 @@ if (window.SpeechRecognition) {
   // If Web Speech API is unavailable
   alert("Sorry, your browser does not support speech recognition.");
 }
+// Reference to the transcription paragraph
+const transcriptionElement = document.getElementById("transcription");
+
+// Function to download transcription as a file
+function downloadTranscription() {
+  const transcriptionText = transcriptionElement.innerText;
+
+  if (transcriptionText.trim() === "") {
+    alert("No transcription content to download.");
+    return;
+  }
+
+  // Create a Blob with the transcription text content
+  const blob = new Blob([transcriptionText], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
+
+  // Create an anchor element for download
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "transcription.txt";
+  a.click();
+
+  // Clean up the URL object
+  URL.revokeObjectURL(url);
+}
+
+// Add event listener to download button
+document
+  .getElementById("downloadBtn")
+  .addEventListener("click", downloadTranscription);
