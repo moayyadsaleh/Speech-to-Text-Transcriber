@@ -15,6 +15,24 @@
     color: #333;
     padding: 1rem;
   }
+  h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #4a4e69; /* Darker shade for better contrast */
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 1.5rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+  }
+  
+  h1:hover {
+    text-shadow: 4px 4px 12px rgba(118, 75, 162, 0.4);
+    transform: scale(1.05);
+  }
   
   .container {
     width: 90%;
