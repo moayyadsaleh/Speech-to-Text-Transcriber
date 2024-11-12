@@ -1,92 +1,106 @@
-// app.js
+let isTranscribing = false;
+let isPaused = false;
+let transcriptionContent = "";
+let timerInterval;
+let secondsElapsed = 0;
+const timerElement = document.getElementById("timer");
+const transcriptionElement = document.getElementById("transcription");
+const transcribeBtn = document.getElementById("transcribeBtn");
+const pauseBtn = document.getElementById("pauseBtn");
+const resumeBtn = document.getElementById("resumeBtn");
+const restartBtn = document.getElementById("restartBtn");
 
-// Ensure Web Speech API is available
-window.SpeechRecognition =
-  window.SpeechRecognition || window.webkitSpeechRecognition;
+// Initialize the Speech Recognition API
+const recognition = new (window.SpeechRecognition ||
+  window.webkitSpeechRecognition)();
+recognition.lang = "ar-SA"; // Set to Arabic
+recognition.interimResults = true;
 
-if (window.SpeechRecognition) {
-  const recognition = new SpeechRecognition();
-  recognition.lang = "ar-SA"; // Set language to Arabic (Saudi Arabia) for better accuracy
-  recognition.interimResults = true; // Show results as the user is speaking
-  recognition.continuous = true; // Keeps recognition active indefinitely
-
-  const transcribeBtn = document.getElementById("transcribeBtn");
-  const transcriptionDisplay = document.getElementById("transcription");
-  const timerDisplay = document.getElementById("timer");
-
-  let isListening = false;
-  let startTime;
-  let timerInterval;
-
-  // Update timer display function
-  function updateTimer() {
-    const elapsedTime = Date.now() - startTime;
-    const seconds = Math.floor((elapsedTime / 1000) % 60);
-    const minutes = Math.floor((elapsedTime / (1000 * 60)) % 60);
-    timerDisplay.textContent = `Time: ${minutes}:${
+function startTimer() {
+  timerInterval = setInterval(() => {
+    secondsElapsed++;
+    const minutes = Math.floor(secondsElapsed / 60);
+    const seconds = secondsElapsed % 60;
+    timerElement.textContent = `Time: ${minutes}:${
       seconds < 10 ? "0" : ""
     }${seconds}`;
-  }
-
-  // Toggle listening on button click
-  transcribeBtn.addEventListener("click", () => {
-    if (isListening) {
-      recognition.stop();
-      transcribeBtn.textContent = "Start Transcription";
-      clearInterval(timerInterval); // Stop the timer
-    } else {
-      recognition.start();
-      transcribeBtn.textContent = "Stop Transcription";
-      startTime = Date.now(); // Set the start time
-      timerInterval = setInterval(updateTimer, 1000); // Start the timer
-    }
-    isListening = !isListening;
-  });
-
-  // Update transcription display with interim and final results
-  recognition.addEventListener("result", (event) => {
-    const transcriptArray = Array.from(event.results)
-      .map((result) => result[0].transcript)
-      .join(" ");
-
-    transcriptionDisplay.textContent = transcriptArray;
-  });
-
-  // Restart recognition if it stops
-  recognition.addEventListener("end", () => {
-    if (isListening) recognition.start();
-  });
-} else {
-  // If Web Speech API is unavailable
-  alert("Sorry, your browser does not support speech recognition.");
+  }, 1000);
 }
-// Reference to the transcription paragraph
-const transcriptionElement = document.getElementById("transcription");
 
-// Function to download transcription as a file
-function downloadTranscription() {
-  const transcriptionText = transcriptionElement.innerText;
+function resetTimer() {
+  clearInterval(timerInterval);
+  secondsElapsed = 0;
+  timerElement.textContent = "Time: 0:00";
+}
 
-  if (transcriptionText.trim() === "") {
-    alert("No transcription content to download.");
-    return;
+// Start transcription
+transcribeBtn.addEventListener("click", () => {
+  if (!isTranscribing && !isPaused) {
+    recognition.start();
+    startTimer();
+    isTranscribing = true;
+    isPaused = false;
   }
+});
 
-  // Create a Blob with the transcription text content
-  const blob = new Blob([transcriptionText], { type: "text/plain" });
+// Pause transcription
+pauseBtn.addEventListener("click", () => {
+  if (isTranscribing && !isPaused) {
+    recognition.stop();
+    clearInterval(timerInterval);
+    isPaused = true;
+  }
+});
+
+// Resume transcription
+resumeBtn.addEventListener("click", () => {
+  if (isTranscribing && isPaused) {
+    recognition.start();
+    startTimer();
+    isPaused = false;
+  }
+});
+
+// Restart transcription
+restartBtn.addEventListener("click", () => {
+  recognition.stop();
+  clearInterval(timerInterval);
+  transcriptionContent = "";
+  transcriptionElement.textContent = "";
+  resetTimer();
+  isTranscribing = false;
+  isPaused = false;
+});
+
+// Capture transcription results
+recognition.onresult = (event) => {
+  let interimTranscription = "";
+  for (let i = event.resultIndex; i < event.results.length; i++) {
+    const transcript = event.results[i][0].transcript;
+    if (event.results[i].isFinal) {
+      transcriptionContent += transcript + " ";
+    } else {
+      interimTranscription += transcript;
+    }
+  }
+  transcriptionElement.textContent =
+    transcriptionContent + interimTranscription;
+};
+
+// Stop transcription on end
+recognition.onend = () => {
+  if (isTranscribing && !isPaused) {
+    recognition.start();
+  }
+};
+
+// Download transcription
+document.getElementById("downloadBtn").addEventListener("click", () => {
+  const blob = new Blob([transcriptionContent], { type: "text/plain" });
   const url = URL.createObjectURL(blob);
-
-  // Create an anchor element for download
   const a = document.createElement("a");
   a.href = url;
   a.download = "transcription.txt";
   a.click();
-
-  // Clean up the URL object
   URL.revokeObjectURL(url);
-}
-
-// Add event listener to download button
-document
-  .getElementById("downloadBtn")
-  .addEventListener("click", downloadTranscription);
+});
