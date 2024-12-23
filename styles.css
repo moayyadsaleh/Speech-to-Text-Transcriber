@@ -9,12 +9,27 @@
 /* Body and Background */
 body {
   background: linear-gradient(to right, #6a11cb, #2575fc);
+  background-size: 400% 400%;
+  animation: gradientBG 10s ease infinite;
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   color: #fff;
   text-align: center;
+  transition: background 0.3s ease;
+}
+
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 /* Container Styling */
@@ -26,6 +41,19 @@ body {
   max-width: 700px;
   width: 100%;
   transition: all 0.3s ease;
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 
 /* Heading Styling */
@@ -66,11 +94,30 @@ h1 {
 #languageSelector:hover {
   background: #2575fc;
   color: #fff;
+  animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  75% {
+    transform: translateX(-5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
 
 /* Button Styling */
 button {
-  background: #2575fc;
+  background: linear-gradient(45deg, #2575fc, #6a11cb);
   color: white;
   font-size: 1.1rem;
   padding: 12px 20px;
@@ -82,20 +129,25 @@ button {
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 button i {
   margin-right: 8px;
 }
 
-/* Hover effects for buttons */
 button:hover {
-  background: #6a11cb;
-  transform: translateY(-4px);
+  background: linear-gradient(45deg, #6a11cb, #2575fc);
+  transform: scale(1.05) translateY(-4px); /* Slightly grow the button */
 }
 
 button:active {
-  transform: translateY(2px);
+  transform: scale(1) translateY(2px); /* Return to normal on click */
+}
+
+button:focus {
+  outline: none;
+  box-shadow: 0 0 8px rgba(38, 38, 38, 0.3), 0 0 20px rgba(0, 204, 255, 0.6); /* Glowing border */
 }
 
 /* Timer and Transcription Area */
@@ -121,17 +173,14 @@ button:active {
   font-size: 1.1rem;
   font-family: "Arial", sans-serif;
   resize: vertical; /* Allow resizing vertically */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  scroll-behavior: smooth;
 }
 
 #transcription:focus {
   border-color: #6a11cb;
   outline: none;
-}
-
-/* Add subtle shadows to buttons when focused */
-button:focus {
-  outline: none;
-  box-shadow: 0 0 8px rgba(38, 38, 38, 0.3);
+  box-shadow: 0 0 10px rgba(38, 38, 38, 0.5), 0 0 20px rgba(0, 204, 255, 0.6); /* Glowing border */
 }
 
 /* Highlight for important transcription text */
