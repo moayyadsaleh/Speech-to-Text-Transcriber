@@ -11,8 +11,9 @@
     />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html-docx-js/0.5.0/html-docx.min.js"></script>
     <style>
-      /* Instructions Section Style */
-      .instructions {
+      /* Instructions and Use Cases Section Style */
+      .instructions,
+      .use-cases {
         background-color: #f9f9f9;
         border: 1px solid #ccc;
         padding: 15px;
@@ -24,27 +25,32 @@
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
       }
 
-      .instructions h2 {
+      .instructions h2,
+      .use-cases h2 {
         font-size: 18px;
         margin-bottom: 10px;
         color: #333;
       }
 
-      .instructions p {
+      .instructions p,
+      .use-cases p {
         margin: 10px 0;
       }
 
-      .instructions ol {
+      .instructions ol,
+      .use-cases ul {
         padding-left: 20px;
         list-style-type: decimal;
       }
 
-      .instructions li {
+      .instructions li,
+      .use-cases li {
         margin: 5px 0;
       }
 
-      /* Style for the Show/Hide Instructions Button */
-      #toggleInstructionsBtn {
+      /* Style for the Show/Hide Button */
+      #toggleInstructionsBtn,
+      #toggleUseCasesBtn {
         background-color: #007bff;
         color: white;
         border: none;
@@ -57,11 +63,13 @@
         align-items: center;
       }
 
-      #toggleInstructionsBtn i {
+      #toggleInstructionsBtn i,
+      #toggleUseCasesBtn i {
         margin-right: 8px;
       }
 
-      #toggleInstructionsBtn:hover {
+      #toggleInstructionsBtn:hover,
+      #toggleUseCasesBtn:hover {
         background-color: #0056b3;
       }
     </style>
@@ -88,6 +96,51 @@
       <!-- Show/Hide Instructions Button -->
       <button id="toggleInstructionsBtn">
         <i class="fas fa-info-circle"></i> Show Instructions
+      </button>
+
+      <!-- Use Cases Section (initially hidden) -->
+      <div id="useCases" class="use-cases" style="display: none">
+        <h2>Use Cases for Instructors</h2>
+        <ul>
+          <li>
+            <strong>Speaking Practice and Error Correction:</strong> Transcribe
+            student speech and provide real-time corrections on pronunciation,
+            grammar, and vocabulary.
+          </li>
+          <li>
+            <strong>Role-Play Activities:</strong> Simulate real-world scenarios
+            and transcribe conversations for review and feedback.
+          </li>
+          <li>
+            <strong>Pronunciation Drills:</strong> Focus on specific sounds or
+            phonetic patterns to help students refine their pronunciation.
+          </li>
+          <li>
+            <strong>Authentic Learning Tasks:</strong> Create activities based
+            on real-world situations (e.g., customer service calls) for students
+            to practice and review.
+          </li>
+          <li>
+            <strong>Debates and Discussions:</strong> Transcribe group
+            discussions and provide feedback on language use, argumentation, and
+            fluency.
+          </li>
+          <li>
+            <strong>Writing Skills Enhancement:</strong> Use speech-to-text to
+            practice writing by speaking and help students bridge spoken and
+            written language.
+          </li>
+          <li>
+            <strong>Self-Assessment:</strong> Allow students to review their
+            transcriptions, identify errors, and improve their performance
+            through reflection.
+          </li>
+        </ul>
+      </div>
+
+      <!-- Show/Hide Use Cases Button -->
+      <button id="toggleUseCasesBtn">
+        <i class="fas fa-list-ul"></i> Show Use Cases
       </button>
 
       <!-- Language Selector -->
@@ -120,23 +173,42 @@
       <div id="transcription" contenteditable="true"></div>
     </div>
 
-    <!-- JavaScript to toggle instructions visibility -->
+    <!-- JavaScript to toggle instructions and use cases visibility -->
     <script>
-      const toggleButton = document.getElementById("toggleInstructionsBtn");
+      const toggleInstructionsBtn = document.getElementById(
+        "toggleInstructionsBtn"
+      );
       const instructions = document.getElementById("instructions");
+      const toggleUseCasesBtn = document.getElementById("toggleUseCasesBtn");
+      const useCases = document.getElementById("useCases");
 
-      toggleButton.addEventListener("click", function () {
+      toggleInstructionsBtn.addEventListener("click", function () {
         if (
           instructions.style.display === "none" ||
           instructions.style.display === ""
         ) {
           instructions.style.display = "block";
-          toggleButton.innerHTML =
+          toggleInstructionsBtn.innerHTML =
             '<i class="fas fa-info-circle"></i> Hide Instructions';
         } else {
           instructions.style.display = "none";
-          toggleButton.innerHTML =
+          toggleInstructionsBtn.innerHTML =
             '<i class="fas fa-info-circle"></i> Show Instructions';
+        }
+      });
+
+      toggleUseCasesBtn.addEventListener("click", function () {
+        if (
+          useCases.style.display === "none" ||
+          useCases.style.display === ""
+        ) {
+          useCases.style.display = "block";
+          toggleUseCasesBtn.innerHTML =
+            '<i class="fas fa-list-ul"></i> Hide Use Cases';
+        } else {
+          useCases.style.display = "none";
+          toggleUseCasesBtn.innerHTML =
+            '<i class="fas fa-list-ul"></i> Show Use Cases';
         }
       });
     </script>
