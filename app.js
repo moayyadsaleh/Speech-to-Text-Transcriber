@@ -40,6 +40,16 @@ function setLanguage() {
   recognition.lang = selectedLang;
 }
 
+// Stop current transcription if in progress
+function stopTranscription() {
+  if (isTranscribing) {
+    recognition.stop();
+    clearInterval(timerInterval);
+    isTranscribing = false;
+    isPaused = false;
+  }
+}
+
 // Start transcription
 transcribeBtn.addEventListener("click", () => {
   if (!isTranscribing && !isPaused) {
@@ -72,13 +82,10 @@ resumeBtn.addEventListener("click", () => {
 
 // Restart transcription
 restartBtn.addEventListener("click", () => {
-  recognition.stop();
-  clearInterval(timerInterval);
+  stopTranscription();
   transcriptionContent = "";
   transcriptionElement.textContent = "";
   resetTimer();
-  isTranscribing = false;
-  isPaused = false;
 });
 
 // Capture transcription results
@@ -97,8 +104,11 @@ recognition.onresult = (event) => {
 
   // Update content correctly: append final and show interim
   transcriptionContent += finalTranscription;
-  transcriptionElement.textContent =
-    transcriptionContent + interimTranscription;
+
+  // Highlight interim transcription and append final transcription normally
+  transcriptionElement.innerHTML =
+    transcriptionContent +
+    `<span class="highlight">${interimTranscription}</span>`;
 };
 
 // Stop transcription on end
@@ -107,6 +117,19 @@ recognition.onend = () => {
     recognition.start();
   }
 };
+
+// Reset language when it changes
+languageSelector.addEventListener("change", () => {
+  stopTranscription(); // Stop current transcription
+  setLanguage(); // Set the new language
+  if (isTranscribing) {
+    // Start transcription again if needed
+    recognition.start();
+    startTimer();
+    isTranscribing = true;
+    isPaused = false;
+  }
+});
 
 // Download transcription with manual edits
 document.getElementById("downloadBtn").addEventListener("click", () => {
