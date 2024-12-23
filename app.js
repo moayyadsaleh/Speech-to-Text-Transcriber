@@ -9,11 +9,11 @@ const transcribeBtn = document.getElementById("transcribeBtn");
 const pauseBtn = document.getElementById("pauseBtn");
 const resumeBtn = document.getElementById("resumeBtn");
 const restartBtn = document.getElementById("restartBtn");
+const languageSelector = document.getElementById("languageSelector");
 
 // Initialize the Speech Recognition API
 const recognition = new (window.SpeechRecognition ||
   window.webkitSpeechRecognition)();
-recognition.lang = "ar-SA"; // Set to Arabic
 recognition.interimResults = true; // Show interim results
 recognition.continuous = true; // Enable continuous listening for improved accuracy
 
@@ -34,9 +34,16 @@ function resetTimer() {
   timerElement.textContent = "Time: 0:00";
 }
 
+// Set language based on user selection
+function setLanguage() {
+  const selectedLang = languageSelector.value;
+  recognition.lang = selectedLang;
+}
+
 // Start transcription
 transcribeBtn.addEventListener("click", () => {
   if (!isTranscribing && !isPaused) {
+    setLanguage(); // Set language before starting
     recognition.start();
     startTimer();
     isTranscribing = true;
@@ -56,6 +63,7 @@ pauseBtn.addEventListener("click", () => {
 // Resume transcription
 resumeBtn.addEventListener("click", () => {
   if (isTranscribing && isPaused) {
+    setLanguage(); // Set language before resuming
     recognition.start();
     startTimer();
     isPaused = false;
@@ -76,14 +84,19 @@ restartBtn.addEventListener("click", () => {
 // Capture transcription results
 recognition.onresult = (event) => {
   let interimTranscription = "";
+  let finalTranscription = "";
+
   for (let i = event.resultIndex; i < event.results.length; i++) {
     const transcript = event.results[i][0].transcript;
     if (event.results[i].isFinal) {
-      transcriptionContent += transcript + " ";
+      finalTranscription += transcript + " ";
     } else {
       interimTranscription += transcript;
     }
   }
+
+  // Update content correctly: append final and show interim
+  transcriptionContent += finalTranscription;
   transcriptionElement.textContent =
     transcriptionContent + interimTranscription;
 };
@@ -97,10 +110,7 @@ recognition.onend = () => {
 
 // Download transcription with manual edits
 document.getElementById("downloadBtn").addEventListener("click", () => {
-  // Capture the full text from the editable transcription element, including manual edits
   const transcriptionText = transcriptionElement.textContent;
-
-  // Create a Blob and initiate the download
   const blob = new Blob([transcriptionText], { type: "text/plain" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");

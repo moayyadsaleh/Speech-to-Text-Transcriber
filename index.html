@@ -9,10 +9,102 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html-docx-js/0.5.0/html-docx.min.js"></script>
+    <style>
+      /* Instructions Section Style */
+      .instructions {
+        background-color: #f9f9f9;
+        border: 1px solid #ccc;
+        padding: 15px;
+        margin: 15px 0;
+        border-radius: 8px;
+        font-family: Arial, sans-serif;
+        font-size: 16px;
+        color: #333;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .instructions h2 {
+        font-size: 18px;
+        margin-bottom: 10px;
+        color: #333;
+      }
+
+      .instructions p {
+        margin: 10px 0;
+      }
+
+      .instructions ol {
+        padding-left: 20px;
+        list-style-type: decimal;
+      }
+
+      .instructions li {
+        margin: 5px 0;
+      }
+
+      /* Style for the Show/Hide Instructions Button */
+      #toggleInstructionsBtn {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        cursor: pointer;
+        border-radius: 5px;
+        margin-top: 10px;
+        font-size: 16px;
+        display: inline-flex;
+        align-items: center;
+      }
+
+      #toggleInstructionsBtn i {
+        margin-right: 8px;
+      }
+
+      #toggleInstructionsBtn:hover {
+        background-color: #0056b3;
+      }
+    </style>
   </head>
   <body>
     <div class="container">
-      <h1>Arabic Speech to Text Transcriber</h1>
+      <h1>Speech to Text Transcriber</h1>
+
+      <!-- Instructions Section (initially hidden) -->
+      <div id="instructions" class="instructions" style="display: none">
+        <h2>Instructions</h2>
+        <p>Follow these steps to use the Speech to Text Transcriber:</p>
+        <ol>
+          <li>Choose your preferred language from the dropdown menu.</li>
+          <li>Click the "Start Transcription" button to begin speaking.</li>
+          <li>Use "Pause" to stop and "Resume" to continue transcription.</li>
+          <li>
+            If needed, click "Restart" to clear the current transcription.
+          </li>
+          <li>Click "Download Transcription" to save the text.</li>
+        </ol>
+      </div>
+
+      <!-- Show/Hide Instructions Button -->
+      <button id="toggleInstructionsBtn">
+        <i class="fas fa-info-circle"></i> Show Instructions
+      </button>
+
+      <!-- Language Selector -->
+      <div class="language-selector-container">
+        <label for="languageSelector" class="language-label"
+          >Choose Language</label
+        >
+        <select id="languageSelector">
+          <option value="ar-SA">Arabic</option>
+          <option value="en-US">English (US)</option>
+          <option value="es-ES">Spanish</option>
+          <option value="fr-FR">French</option>
+          <option value="ru-RU">Russian</option>
+        </select>
+      </div>
+
+      <!-- Action Buttons -->
       <button id="transcribeBtn">
         <i class="fas fa-microphone"></i> Start Transcription
       </button>
@@ -23,9 +115,32 @@
         <i class="fas fa-download"></i> Download Transcription
       </button>
 
+      <!-- Timer and Transcription Display -->
       <p id="timer">Time: 0:00</p>
       <div id="transcription" contenteditable="true"></div>
     </div>
+
+    <!-- JavaScript to toggle instructions visibility -->
+    <script>
+      const toggleButton = document.getElementById("toggleInstructionsBtn");
+      const instructions = document.getElementById("instructions");
+
+      toggleButton.addEventListener("click", function () {
+        if (
+          instructions.style.display === "none" ||
+          instructions.style.display === ""
+        ) {
+          instructions.style.display = "block";
+          toggleButton.innerHTML =
+            '<i class="fas fa-info-circle"></i> Hide Instructions';
+        } else {
+          instructions.style.display = "none";
+          toggleButton.innerHTML =
+            '<i class="fas fa-info-circle"></i> Show Instructions';
+        }
+      });
+    </script>
+
     <script src="app.js"></script>
   </body>
 </html>
