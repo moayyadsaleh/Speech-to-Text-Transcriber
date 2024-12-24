@@ -156,22 +156,56 @@
           <option value="ru-RU">Russian</option>
         </select>
       </div>
+      <div class="control-container">
+        <!-- Transcription Control -->
+        <div class="transcription-control-section">
+          <h3>Transcription Control</h3>
+          <button id="transcribeBtn" class="transcription-control">
+            <i class="fas fa-microphone"></i> Start Transcription
+          </button>
+          <button id="pauseBtn" class="transcription-control">
+            <i class="fas fa-pause"></i> Pause
+          </button>
+          <button id="resumeBtn" class="transcription-control">
+            <i class="fas fa-play"></i> Resume
+          </button>
+          <button id="restartBtn" class="transcription-control">
+            <i class="fas fa-redo"></i> Restart
+          </button>
+          <button id="downloadBtn" class="transcription-control">
+            <i class="fas fa-download"></i> Download Transcription
+          </button>
+        </div>
+      
+<!-- Record Control -->
+<div class="record-control-section">
+  <h3>Record Control</h3>
+  <button id="startRecordingBtn" class="record-control">
+    <i class="fas fa-microphone-alt"></i> Start Recording
+  </button>
+  <button id="pauseRecordingBtn" class="record-control" disabled>
+    <i class="fas fa-pause"></i> Pause Recording
+  </button>
+  <button id="resumeRecordingBtn" class="record-control" disabled>
+    <i class="fas fa-play"></i> Resume Recording
+  </button>
+  <button id="stopRecordingBtn" class="record-control" disabled>
+    <i class="fas fa-stop"></i> Stop Recording
+  </button>
+  <button id="restartRecordingBtn" class="record-control" disabled>
+    <i class="fas fa-undo"></i> Restart Recording
+  </button>
+  <button id="downloadAudioBtn" class="record-control" disabled>
+    <i class="fas fa-download"></i> Download Audio
+  </button>
+</div>
 
-      <!-- Action Buttons -->
-      <button id="transcribeBtn">
-        <i class="fas fa-microphone"></i> Start Transcription
-      </button>
-      <button id="pauseBtn"><i class="fas fa-pause"></i> Pause</button>
-      <button id="resumeBtn"><i class="fas fa-play"></i> Resume</button>
-      <button id="restartBtn"><i class="fas fa-redo"></i> Restart</button>
-      <button id="downloadBtn">
-        <i class="fas fa-download"></i> Download Transcription
-      </button>
-
-      <!-- Timer and Transcription Display -->
-      <p id="timer">Time: 0:00</p>
-      <div id="transcription" contenteditable="true"></div>
-    </div>
+      
+        <!-- Timer and Transcription Display -->
+        <p id="timer">Time: 0:00</p>
+        <div id="transcription" contenteditable="true"></div>
+      </div>
+      
 
     <!-- JavaScript to toggle instructions and use cases visibility -->
     <script>

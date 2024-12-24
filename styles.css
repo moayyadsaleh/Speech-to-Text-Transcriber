@@ -189,3 +189,89 @@ button:focus {
   font-weight: bold;
   background-color: rgba(255, 102, 0, 0.2); /* Light highlight */
 }
+/* General Button Styling */
+button {
+  padding: 10px 15px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  margin: 5px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Transcription Controls */
+.transcription-control {
+  background-color: #4caf50; /* Green */
+  color: white;
+}
+
+.transcription-control:hover {
+  background-color: #45a049;
+}
+
+/* Record Controls */
+.record-control {
+  background-color: #f44336; /* Red */
+  color: white;
+}
+
+.record-control:hover {
+  background-color: #d32f2f;
+}
+
+/* Disabled Button Styling */
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Timer Styling */
+#timer {
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+/* Transcription Display */
+#transcription {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  min-height: 100px;
+  background-color: #f9f9f9;
+}
+.notification {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #333;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  opacity: 0.9;
+  z-index: 1000;
+  font-size: 16px;
+}
+
+.notification.info {
+  background-color: #007bff;
+}
+
+.notification.success {
+  background-color: #28a745;
+}
+
+.notification.warning {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+.notification.error {
+  background-color: #dc3545;
+}
